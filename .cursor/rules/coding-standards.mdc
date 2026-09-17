@@ -1,0 +1,69 @@
+---
+description: Core coding standards for simplicity, reuse, production quality, security, and maintainability
+alwaysApply: true
+---
+
+# Coding Standards
+
+This is the project's standing engineering contract. Follow it on every change. Prefer the simplest correct solution that is still safe for production.
+
+## Simplicity And Quality
+
+- Code must be very easy to read and understand so that little childern can understand it, edit it, fix it, tweak it, as needed.
+- Use the simplest solution that correctly solves the problem.
+- Write production-quality code from the beginning. Do not write throwaway code unless we explicitly decide it is a temporary experiment.
+- Prefer readability over cleverness. Clear code is more important than short or fancy code.
+- Complete the implementation. Do not ship half-working code when the feature is supposed to be production-ready.
+- Build one piece / one vertical flow at a time, test it, understand it, then add the next piece.
+- Work file-by-file and flow-by-flow. Do not randomly rewrite the project.
+- Make the smallest necessary change to working architecture.
+- Preserve existing architecture unless there is a concrete reason to change it.
+- Explain architectural changes and important tradeoffs when they are introduced.
+- Correctness comes before optimization. Optimize only when there is a real performance reason.
+- Keep dependencies to the minimum necessary and understand why each dependency exists.
+- Keep the system simple enough to understand, but engineered safely enough for real production use. Account for security, reliability, scalability, testing, and maintainability.
+
+## Files, Reuse, And Structure
+
+- One file = one clear job. Each file should have a specific responsibility.
+- Create the minimum number of files necessary. Do not create files just for architectural purity.
+- Reuse existing files before creating new ones.
+- Reuse existing components before creating new components.
+- Reuse existing helpers/utilities before creating new helpers.
+- Reuse existing constants, configuration, theme, navigation, routes, and infrastructure.
+- Do not duplicate business logic. There should normally be one authoritative implementation.
+- Limited simple inline duplication is acceptable when it is easier to understand than creating unnecessary abstractions or extra files.
+- Do not break code into tiny abstractions merely to make it look modular.
+- Organize files into clear labeled sections when that improves readability.
+- Keep imports organized and remove unused imports.
+- Remove dead code, abandoned experiments, and obsolete implementations.
+- Do not leave fake implementations, placeholder production logic, or forgotten TODOs.
+
+## Naming, Comments, And Responsibility
+
+- Use fully descriptive names. Variables, functions, classes, files, routes, database fields, and components should explain what they represent.
+- Avoid vague names such as `data`, `stuff`, `thing`, `temp`, `x`, or `handler` when a clearer name is possible.
+- Python naming: our own filenames, variables, and functions use camelCase. Imported third-party APIs keep their native naming, such as snake_case. This makes project code easy to tell apart from library code.
+  - Ours: `batteryVoltage`, `readGpsFix()`, `flightController.py`
+  - Theirs: `time.sleep()`, `json.dumps()`, `socket.sendto()`
+- Every important file should begin with a documentation block explaining WHAT the file does, WHY it exists, HOW it works or fits into the application, and IMPORTANT security, architectural, operational, or safety considerations.
+- Comments should explain meaningful intent, reasoning, flow, or risk—not repeat obvious code.
+- Functions, components, controllers, models, services, routes, and other layers should have a clear, focused responsibility and remain focused on their actual jobs.
+
+## Security, Backend, And Reliability
+
+- The backend is the source of truth for security-sensitive and business-critical decisions.
+- Never trust client-side input simply because the frontend generated it.
+- Validate backend input. Sanitize input where appropriate.
+- Protect secrets, API keys, credentials, tokens, and private configuration.
+- Enforce authentication on the backend.
+- Enforce authorization on the backend for protected resources and actions.
+- Protect private HTTP routes and authenticated real-time/socket events.
+- Use consistent API responses and appropriate HTTP status codes.
+- Fail safely. Errors should not expose secrets or sensitive implementation details.
+- Handle asynchronous errors explicitly. Avoid crashes, hanging requests, unhandled promises, resource leaks, and silent failures.
+- Add useful logging and observability so failures can actually be diagnosed.
+- Test the success path and important failure paths, especially authentication, database, network, and external-service failures.
+- Keep database access centralized, readable, secure, and efficient. Avoid unnecessary queries and unclear database logic.
+- Use infrastructure according to its job: MongoDB for persistent application data, Redis for appropriate temporary/fast state, and Socket.IO for authenticated real-time communication—only when each is actually needed.
+- AI/RAG systems should stay modular, observable, and grounded in appropriate trusted evidence. For DrAsk specifically, AI output must go through medical-safety controls and must not invent medical certainty, diagnoses, prescriptions, or dosages.
